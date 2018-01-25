@@ -6,7 +6,8 @@ and [brotli](https://www.npmjs.com/package/brotli) for Brotli compression.
 
 ### Installation
 
-[sudo] npm install parcel-plugin-compress -D
-
+```
+sudo npm install parcel-plugin-compress -D
+```
 
 
