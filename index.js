@@ -10,20 +10,21 @@ module.exports = bundler => {
     const logger = bundler.logger;
 
 	bundler.on('bundled', async (bundle) => {
-		const dir = path.dirname(bundle.name);
-		const inputGlob = path.join(dir, '/**/!(*.gz|*.br)');
-		const files = await glob(inputGlob);
+		if (process.env.NODE_ENV === 'production') {
+			const dir = path.dirname(bundle.name);
+			const inputGlob = path.join(dir, '/**/!(*.gz|*.br)');
+			const files = await glob(inputGlob);
 
-		const queue = new pQueue({concurrency: 2});
+			const queue = new pQueue({concurrency: 2});
 
-		files.forEach(file => {
-			queue.add(() => zopfliCompress(file));
-			queue.add(() => brotliCompress(file));
-		});    
+			files.forEach(file => {
+				queue.add(() => zopfliCompress(file));
+				queue.add(() => brotliCompress(file));
+			});    
 
-		await queue.onIdle();
-        logger.clear();
-
+			await queue.onIdle();
+			logger.clear();
+		}
 	});
 
 	function zopfliCompress(file) {
