@@ -39,4 +39,12 @@ See the [documentation](http://nginx.org/en/docs/http/ngx_http_gzip_static_modul
 To support Brotli you currently need to build NGINX from source with the [ngx_brotli](https://github.com/google/ngx_brotli) module from Google. 
 
 
+#### Apache HTTPD
+https://blog.desgrange.net/post/2017/04/10/pre-compression-with-gzip-and-brotli-in-apache.html
+
+
+#### LightSpeed
+Support for Brotli introduced in version [5.2](https://www.litespeedtech.com/products/litespeed-web-server/release-log)
+
+
 
