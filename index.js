@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const glob = require('glob-promise');
-const zopfli = require('node-zopfli');
+const zopfli = require('@gfx/zopfli');
 const pQueue = require('p-queue');
 const brotli = require('brotli');
 
