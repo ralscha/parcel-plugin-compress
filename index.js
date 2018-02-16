@@ -7,8 +7,6 @@ const brotli = require('brotli');
 
 module.exports = bundler => {
 
-    const logger = bundler.logger;
-
 	bundler.on('bundled', async (bundle) => {
 		if (process.env.NODE_ENV === 'production') {
 			const dir = path.dirname(bundle.name);
@@ -23,7 +21,6 @@ module.exports = bundler => {
 			});    
 
 			await queue.onIdle();
-			logger.clear();
 		}
 	});
 
@@ -35,7 +32,6 @@ module.exports = bundler => {
 
 		return new Promise((resolve, reject) => {
 			fs.readFile(file, function(err, content) {
-				logger.status('🗜', 'Compressing: ' + file);
 				zopfli.gzip(content, { numiterations: 15, blocksplitting: true, blocksplittinglast: false, blocksplittingmax: 15}, 
 							function(err, compressedContent) {
 					if (stat.size > compressedContent.length) {
@@ -56,7 +52,6 @@ module.exports = bundler => {
 
 		return new Promise((resolve, reject) => {
 			fs.readFile(file, (err, content) => {
-				logger.status('🗜', 'Compressing: ' + file);
 				const compressedContent = brotli.compress(content, { mode: 1, quality: 11, lgwin: 22 });
 				if (compressedContent !== null && stat.size > compressedContent.length) {
 					fs.writeFile(file + '.br', compressedContent, () => resolve());
