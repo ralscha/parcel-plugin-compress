@@ -11,6 +11,40 @@ npm install parcel-plugin-compress -D
 ```
 
 
+### Usage
+
+By default, this plugin doesn't require any extra confiuguration to get started. If, however, you'd like to be more targeted in how this plugin is applied, you can configure the plugin as needed.
+
+To configure, add a file called `.compressrc` in your project's root folder, or add a key in your `package.json` called `compress`. The available options are below, with the defaults.
+
+```js
+{
+  // a regular expression to test filenames against
+  "test": ".",
+  // a number that represents the minimum filesize to compress, in bytes
+  "threshold": undefined,
+  // configuration options for gzip compression
+  "gzip": {
+    "numiterations": 15,
+    "blocksplitting": true,
+    "blocksplittinglast": false,
+    "blocksplittingmax": 15,
+  },
+  // configuration options for brotli compress
+  "brotli": {
+    "mode": 0,
+    "quality": 11,
+    "lgwin": 22,
+    "lgblock": 0,
+    "enable_dictionary": true,
+    "enable_transforms": false,
+    "greedy_block_split": false,
+    "enable_context_modeling": false,
+  }
+}
+```
+
+
 ### Browser Support for Brotli
 
 Current versions of the major browsers send `br` in the `Accept-Encoding` header when the request is sent over TLS
