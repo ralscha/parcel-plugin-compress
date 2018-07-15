@@ -34,11 +34,10 @@ let output = [];
 
 module.exports = bundler => {
 	bundler.on('bundled', async (bundle) => {
-		const start = new Date().getTime();
+		if (process.env.NODE_ENV === 'production') {			
+			const start = new Date().getTime();
+			console.log(chalk.bold('\n🗜️  Compressing bundled files...\n'));
 
-		console.log(chalk.bold('\n🗜️  Compressing bundled files...\n'));
-
-		if (process.env.NODE_ENV === 'production') {
 			try {
 				const explorer = comsiconfig('compress');
 				const { config: { gzip, brotli, test, threshold } } = (await explorer.search()) || { config: defaultOptions }
