@@ -1,7 +1,7 @@
 {
   "name": "parcel-plugin-compress",
   "description": "Parcel plugin that pre-compresses resources with Brotli and Gzip",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "repository": "https://github.com/ralscha/parcel-plugin-compress",
   "author": "Ralph Schaer <ralphschaer@gmail.com>",
