@@ -26,7 +26,7 @@
     "glob-promise": "3.4.0",
     "grapheme-breaker": "0.3.2",
     "iltorb": "2.3.2",
-    "p-queue": "2.3.1",
+    "p-queue": "2.4.2",
     "strip-ansi": "4.0.0"
   }
 }
