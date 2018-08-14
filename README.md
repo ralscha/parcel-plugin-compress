@@ -25,6 +25,7 @@ To configure, add a file called `.compressrc` in your project's root folder, or 
   "threshold": undefined,
   // configuration options for gzip compression
   "gzip": {
+    "enabled": true,
     "numiterations": 15,
     "blocksplitting": true,
     "blocksplittinglast": false,
@@ -32,6 +33,7 @@ To configure, add a file called `.compressrc` in your project's root folder, or 
   },
   // configuration options for brotli compress
   "brotli": {
+    "enabled": true,
     "mode": 0,
     "quality": 11,
     "lgwin": 22,
@@ -59,7 +61,7 @@ Support introduced in version ...
 
 ### Server support
 
-To take advantage of precompressed resources you need a server that is able to understand the `Accept-Encoding` header and look for files that end in `.gz` or `.br`
+To take advantage of precompressed resources you need a server that is able to understand the `Accept-Encoding` header and look for files that end with `.gz` or `.br`
 
 #### NGINX 
 NGINX supports Gzip compressed files out of the box with the `gzip_static` directive. 

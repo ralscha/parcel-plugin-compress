@@ -13,12 +13,14 @@ const defaultOptions = {
 	test: '.',
 	threshold: undefined,
 	gzip: {
+		enabled: true,
 		numiterations: 15,
 		blocksplitting: true,
 		blocksplittinglast: false,
 		blocksplittingmax: 15,
 	},
 	brotli: {
+		enabled: true,
 		mode: 0,
 		quality: 11,
 		lgwin: 22,
@@ -50,8 +52,8 @@ module.exports = bundler => {
 				const queue = new pQueue({ concurrency: 2 });
 
 				filesToCompress.forEach(file => {
-					queue.add(() => zopfliCompress(file, { ...defaultOptions.gzip, ...gzip, threshold }));
-					queue.add(() => brotliCompress(file, { ...defaultOptions.brotli, ...brotli, threshold }));
+					queue.add(() => zopfliCompress(file, { ...defaultOptions.gzip, threshold, ...gzip  }));
+					queue.add(() => brotliCompress(file, { ...defaultOptions.brotli, threshold, ...brotli }));
 				});
 
 				await queue.onIdle();
@@ -68,7 +70,11 @@ module.exports = bundler => {
 		}
 	});
 
-	function zopfliCompress(file, config) {
+	function zopfliCompress(file, config) {		
+		if (!config.enabled) {
+			return Promise.resolve();
+		}
+		
 		const stat = fs.statSync(file);
 		const start = new Date().getTime();
 
@@ -106,6 +112,10 @@ module.exports = bundler => {
 	}
 
 	function brotliCompress(file, config) {
+		if (!config.enabled) {
+			return Promise.resolve();
+		}
+		
 		const stat = fs.statSync(file);
 		const start = new Date().getTime();
 
