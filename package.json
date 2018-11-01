@@ -27,6 +27,6 @@
     "grapheme-breaker": "0.3.2",
     "iltorb": "2.4.0",
     "p-queue": "3.0.0",
-    "strip-ansi": "4.0.0"
+    "strip-ansi": "5.0.0"
   }
 }
