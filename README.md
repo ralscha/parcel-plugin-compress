@@ -4,14 +4,14 @@ This plugin utilizes [@gfx/zopfli](https://github.com/gfx/universal-zopfli-js) f
 and [brotli](https://www.npmjs.com/package/brotli) for Brotli compression.
 
 
-### Installation
+## Installation
 
 ```
 npm install parcel-plugin-compress -D
 ```
 
 
-### Usage
+## Usage
 
 By default, this plugin doesn't require any extra confiuguration to get started. If, however, you'd like to be more targeted in how this plugin is applied, you can configure the plugin as needed.
 
@@ -47,7 +47,7 @@ To configure, add a file called `.compressrc` in your project's root folder, or 
 ```
 
 
-### Browser Support for Brotli
+## Browser Support for Brotli
 
 Current versions of the major browsers send `br` in the `Accept-Encoding` header when the request is sent over TLS
 
@@ -59,7 +59,7 @@ Support introduced in version ...
   * Safari 11
 
 
-### Server support
+## Server support
 
 To take advantage of precompressed resources you need a server that is able to understand the `Accept-Encoding` header and serve files ending with `.gz` and `.br` accordingly.
 
@@ -76,7 +76,7 @@ To enable Brotli support you either
   * build Nginx from source with the [ngx_brotli](https://github.com/google/ngx_brotli) module from Google
   * or install a pre-built Nginx from ppa with the brotli module included:  
     https://gablaxian.com/blog/brotli-compression
-  * or you use the approach described in this blog post that works without the brotli module: 
+  * or use the approach described in this blog post that works without the brotli module:    
     https://siipo.la/blog/poor-mans-brotli-serving-brotli-files-without-nginx-brotli-module
 
 
