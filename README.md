@@ -61,21 +61,27 @@ Support introduced in version ...
 
 ### Server support
 
-To take advantage of precompressed resources you need a server that is able to understand the `Accept-Encoding` header and look for files that end with `.gz` or `.br`
+To take advantage of precompressed resources you need a server that is able to understand the `Accept-Encoding` header and serve files ending with `.gz` and `.br` accordingly.
 
-#### NGINX 
-NGINX supports Gzip compressed files out of the box with the `gzip_static` directive. 
+#### Nginx 
+Nginx supports Gzip compressed files out of the box with the `gzip_static` directive. 
 
-Add this to a `http`, `server` or `location` section and NGINX will automatically look for files ending with .gz when the request contains an `Accept-Encoding` header with the value `gzip`. 
+Add this to a `http`, `server` or `location` section and Nginx will automatically search for files ending with .gz when the request contains an `Accept-Encoding` header with the value `gzip`. 
 ```
 gzip_static  on;  
 ```
 See the [documentation](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html) for more information.
 
-To support Brotli you currently need to build NGINX from source with the [ngx_brotli](https://github.com/google/ngx_brotli) module from Google. 
+To enable Brotli support you either 
+  * build Nginx from source with the [ngx_brotli](https://github.com/google/ngx_brotli) module from Google
+  * or install a pre-built Nginx from ppa with the brotli module included:  
+    https://gablaxian.com/blog/brotli-compression
+  * or you use the approach described in this blog post that works without the brotli module: 
+    https://siipo.la/blog/poor-mans-brotli-serving-brotli-files-without-nginx-brotli-module
 
 
-#### Apache HTTPD
+#### Apache HTTP
+https://css-tricks.com/brotli-static-compression/     
 https://blog.desgrange.net/post/2017/04/10/pre-compression-with-gzip-and-brotli-in-apache.html
 
 
