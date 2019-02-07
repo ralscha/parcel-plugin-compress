@@ -1,6 +1,4 @@
-const path = require('path');
 const fs = require('fs');
-const glob = require('glob-promise');
 const zopfli = require('@gfx/zopfli');
 const pQueue = require('p-queue');
 const comsiconfig = require('cosmiconfig');
@@ -36,22 +34,27 @@ let output = [];
 
 module.exports = bundler => {
 	bundler.on('bundled', async (bundle) => {
-		if (process.env.NODE_ENV === 'production') {			
+		if (process.env.NODE_ENV === 'production') {
 			const start = new Date().getTime();
 			console.log(chalk.bold('\n🗜️  Compressing bundled files...\n'));
 
 			try {
 				const explorer = comsiconfig('compress');
 				const { config: { gzip, brotli, test, threshold } } = (await explorer.search()) || { config: defaultOptions }
-				const dir = path.dirname(bundle.name);
-				const inputGlob = path.join(dir, '/**/!(*.gz|*.br)');
-				const files = await glob(inputGlob);
+
 				const fileTest = new RegExp(test)
-				const filesToCompress = files.filter((file) => fileTest.test(file))
+				function* filesToCompress(bundle) {
+					if (bundle.name && fileTest.test(bundle.name)) {
+						yield bundle.name
+					}
+					for (var child of bundle.childBundles) {
+						yield* filesToCompress(child)
+					}
+				}
 
 				const queue = new pQueue({ concurrency: 2 });
 
-				filesToCompress.forEach(file => {
+				[...filesToCompress(bundle)].forEach(file => {
 					queue.add(() => zopfliCompress(file, { ...defaultOptions.gzip, threshold, ...gzip  }));
 					queue.add(() => brotliCompress(file, { ...defaultOptions.brotli, threshold, ...brotli }));
 				});
@@ -70,11 +73,11 @@ module.exports = bundler => {
 		}
 	});
 
-	function zopfliCompress(file, config) {		
+	function zopfliCompress(file, config) {
 		if (!config.enabled) {
 			return Promise.resolve();
 		}
-		
+
 		const stat = fs.statSync(file);
 		const start = new Date().getTime();
 
@@ -115,7 +118,7 @@ module.exports = bundler => {
 		if (!config.enabled) {
 			return Promise.resolve();
 		}
-		
+
 		const stat = fs.statSync(file);
 		const start = new Date().getTime();
 
