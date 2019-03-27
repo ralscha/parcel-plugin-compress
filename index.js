@@ -4,6 +4,7 @@ const comsiconfig = require('cosmiconfig');
 const chalk = require('chalk');
 const zopfliAdapter = require('./zopfliAdapter');
 const brotliAdapter = require('./brotliAdapter');
+const zlib = require('zlib');
 const { table, sortResults, formatResults } = require('./formatter');
 
 const brotli = brotliAdapter();
@@ -19,6 +20,10 @@ const defaultOptions = {
 		blocksplitting: true,
 		blocksplittinglast: false,
 		blocksplittingmax: 15,
+		zlib: false,
+		zlibLevel: zlib.constants.Z_BEST_COMPRESSION,
+		zlibMemLevel: zlib.constants.Z_BEST_COMPRESSION
+
 	},
 	brotli: {
 		enabled: true,
@@ -58,7 +63,7 @@ module.exports = bundler => {
 				const queue = new pQueue({ concurrency: defaultOptions.concurrency });
 
 				[...filesToCompress(bundle)].forEach(file => {
-					queue.add(() => zopfliCompress(file, { ...defaultOptions.gzip, threshold, ...gzip  }));
+					queue.add(() => gzipCompress(file, { ...defaultOptions.gzip, threshold, ...gzip  }));
 					queue.add(() => brotliCompress(file, { ...defaultOptions.brotli, threshold, ...brotli }));
 				});
 
@@ -76,7 +81,7 @@ module.exports = bundler => {
 		}
 	});
 
-	function zopfliCompress(file, config) {
+	function gzipCompress(file, config) {
 		if (!config.enabled) {
 			return Promise.resolve();
 		}
@@ -96,25 +101,32 @@ module.exports = bundler => {
 			fs.readFile(file, function(err, content) {
 				if (err) { return reject(err); }
 
-				zopfli.gzip(content, config, function(err, compressedContent) {
-					if (err) { return reject(err); }
-
-					if (stat.size > compressedContent.length) {
-						const fileName = file + '.gz';
-
-						fs.writeFile(fileName, compressedContent, () => {
-							const end = new Date().getTime();
-
-							output.push({ size: compressedContent.length, file: fileName, time: end - start });
-
-							return resolve();
-						});
-					} else {
-						resolve();
-					}
-				});
+				if (config.zlib) {
+					zlib.gzip(content, { level: config.zlibLevel, memLevel: config.zlibMemLevel }, handleCompressedData.bind(this, resolve, reject));
+				} else {
+					zopfli.gzip(content, config, handleCompressedData.bind(this, resolve, reject));
+				}
 			});
 		});
+
+
+		function handleCompressedData(resolve, reject, err, compressedContent) {
+			if (err) { return reject(err); }
+
+			if (stat.size > compressedContent.length) {
+				const fileName = file + '.gz';
+
+				fs.writeFile(fileName, compressedContent, () => {
+					const end = new Date().getTime();
+
+					output.push({ size: compressedContent.length, file: fileName, time: end - start });
+
+					return resolve();
+				});
+			} else {
+				resolve();
+			}			
+		}
 	}
 
 	function brotliCompress(file, config) {
