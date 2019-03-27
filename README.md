@@ -1,7 +1,7 @@
 Parcel plugin that precompresses all assets in production mode. 
 
-This plugin utilizes [@gfx/zopfli](https://github.com/gfx/universal-zopfli-js) for GZip compression
-and [brotli](https://www.npmjs.com/package/brotli) for Brotli compression.
+This plugin utilizes [@gfx/zopfli](https://github.com/gfx/universal-zopfli-js), [node-zopfli-es](https://github.com/jaeh/node-zopfli-es) and [zlib](https://nodejs.org/dist/latest-v10.x/docs/api/zlib.html) for GZip compression
+and [brotli](https://www.npmjs.com/package/brotli) and [iltorb](https://github.com/MayhemYDG/iltorb) for Brotli compression.
 
 
 ## Installation
@@ -13,7 +13,7 @@ npm install parcel-plugin-compress -D
 
 ## Usage
 
-By default, this plugin doesn't require any extra confiuguration to get started. If, however, you'd like to be more targeted in how this plugin is applied, you can configure the plugin as needed.
+By default, this plugin doesn't require any extra configuration to get started. If, however, you'd like to be more targeted in how this plugin is applied, you can configure the plugin as needed.
 
 To configure, add a file called `.compressrc` in your project's root folder, or add a key in your `package.json` called `compress`. The available options are below, with the defaults.
 
@@ -23,6 +23,8 @@ To configure, add a file called `.compressrc` in your project's root folder, or 
   "test": ".",
   // a number that represents the minimum filesize to compress, in bytes
   "threshold": undefined,
+  // Concurrency limit for p-queue
+  concurrency: 2,
   // configuration options for gzip compression
   "gzip": {
     "enabled": true,
@@ -30,6 +32,10 @@ To configure, add a file called `.compressrc` in your project's root folder, or 
     "blocksplitting": true,
     "blocksplittinglast": false,
     "blocksplittingmax": 15,
+    // use zlib instead of zopfli if zlib is true
+		zlib: false,
+		zlibLevel: 9,
+		zlibMemLevel: 9
   },
   // configuration options for brotli compress
   "brotli": {

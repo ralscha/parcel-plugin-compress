@@ -23,7 +23,6 @@ const defaultOptions = {
 		zlib: false,
 		zlibLevel: zlib.constants.Z_BEST_COMPRESSION,
 		zlibMemLevel: zlib.constants.Z_BEST_COMPRESSION
-
 	},
 	brotli: {
 		enabled: true,
@@ -34,7 +33,7 @@ const defaultOptions = {
 		enable_dictionary: true,
 		enable_transforms: false,
 		greedy_block_split: false,
-		enable_context_modeling: false,
+		enable_context_modeling: false
 	}
 };
 
