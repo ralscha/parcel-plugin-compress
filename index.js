@@ -1,12 +1,14 @@
 const fs = require('fs');
-const zopfli = require('@gfx/zopfli');
 const pQueue = require('p-queue');
 const comsiconfig = require('cosmiconfig');
 const chalk = require('chalk');
+const zopfliAdapter = require('./zopfliAdapter');
 const brotliAdapter = require('./brotliAdapter');
 const { table, sortResults, formatResults } = require('./formatter');
 
 const brotli = brotliAdapter();
+const zopfli = zopfliAdapter();
+
 const defaultOptions = {
 	test: '.',
 	threshold: undefined,
