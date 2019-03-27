@@ -33,9 +33,9 @@ To configure, add a file called `.compressrc` in your project's root folder, or 
     "blocksplittinglast": false,
     "blocksplittingmax": 15,
     // use zlib instead of zopfli if zlib is true
-		zlib: false,
-		zlibLevel: 9,
-		zlibMemLevel: 9
+    zlib: false,
+    zlibLevel: 9,
+    zlibMemLevel: 9
   },
   // configuration options for brotli compress
   "brotli": {
