@@ -12,6 +12,7 @@ const zopfli = zopfliAdapter();
 const defaultOptions = {
 	test: '.',
 	threshold: undefined,
+	concurrency: 2,
 	gzip: {
 		enabled: true,
 		numiterations: 15,
@@ -54,7 +55,7 @@ module.exports = bundler => {
 					}
 				}
 
-				const queue = new pQueue({ concurrency: 2 });
+				const queue = new pQueue({ concurrency: defaultOptions.concurrency });
 
 				[...filesToCompress(bundle)].forEach(file => {
 					queue.add(() => zopfliCompress(file, { ...defaultOptions.gzip, threshold, ...gzip  }));
