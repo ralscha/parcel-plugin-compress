@@ -1,3 +1,5 @@
+const chalk = require("chalk");
+
 const zopfliAdapter = () => {
 	try {
 		const zopfli = require('node-zopfli-es');
