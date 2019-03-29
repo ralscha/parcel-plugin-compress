@@ -1,3 +1,5 @@
+const chalk = require("chalk");
+
 const brotliAdapter = () => {
 	try {
 		const iltorb = require('iltorb')
