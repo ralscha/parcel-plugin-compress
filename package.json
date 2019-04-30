@@ -23,11 +23,11 @@
     "cosmiconfig": "5.2.0",
     "filesize": "4.1.2",
     "grapheme-breaker": "0.3.2",
-    "p-queue": "4.0.0",
+    "p-queue": "5.0.0",
     "strip-ansi": "5.2.0"
   },
   "optionalDependencies": {
-    "iltorb": "2.4.2",
-    "node-zopfli-es": "1.0.1"
+    "iltorb": "2.4.3",
+    "node-zopfli-es": "1.0.3"
   }
 }
