@@ -1,7 +1,7 @@
 const path = require('path');
 const { countBreaks } = require('grapheme-breaker');
 const stripAnsi = require('strip-ansi');
-const chalk = require('chalk')
+const chalk = require('chalk');
 const filesize = require('filesize');
 
 const columns = [{ align: 'left' }, { align: 'right' }, { align: 'right' }];

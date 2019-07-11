@@ -1,5 +1,5 @@
 const fs = require('fs');
-const pQueue = require('p-queue');
+const {default: pQueue} = require('p-queue');
 const comsiconfig = require('cosmiconfig');
 const chalk = require('chalk');
 const zopfliAdapter = require('./zopfliAdapter');
@@ -47,9 +47,9 @@ module.exports = bundler => {
 
 			try {
 				const explorer = comsiconfig('compress');
-				const { config: { gzip, brotli, test, threshold } } = (await explorer.search()) || { config: defaultOptions }
+				const { config: { gzip, brotli, test, threshold } } = (await explorer.search()) || { config: defaultOptions };
 
-				const fileTest = new RegExp(test)
+				const fileTest = new RegExp(test);
 				function* filesToCompress(bundle) {
 					if (bundle.name && fileTest.test(bundle.name)) {
 						yield bundle.name
