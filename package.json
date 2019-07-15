@@ -23,7 +23,7 @@
     "cosmiconfig": "5.2.1",
     "filesize": "4.1.2",
     "grapheme-breaker": "0.3.2",
-    "p-queue": "6.0.2",
+    "p-queue": "6.1.0",
     "strip-ansi": "5.2.0"
   },
   "optionalDependencies": {
