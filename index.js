@@ -85,7 +85,14 @@ module.exports = bundler => {
 			return Promise.resolve();
 		}
 
-		const stat = fs.statSync(file);
+		let stat;
+
+		try {
+			stat = fs.statSync(file);
+		} catch (err) {
+			return Promise.resolve();
+		}
+
 		const start = new Date().getTime();
 
 		if (!stat.isFile()) {
@@ -124,7 +131,7 @@ module.exports = bundler => {
 				});
 			} else {
 				resolve();
-			}			
+			}
 		}
 	}
 
@@ -133,7 +140,14 @@ module.exports = bundler => {
 			return Promise.resolve();
 		}
 
-		const stat = fs.statSync(file);
+		let stat;
+
+		try {
+			stat = fs.statSync(file);
+		} catch (err) {
+			return Promise.resolve();
+		}
+
 		const start = new Date().getTime();
 
 		if (!stat.isFile()) {
