@@ -22,27 +22,27 @@ function stringWidth(string) {
 }
 
 function table(table) {
-	// Measure column widths
-	let colWidths = [];
+  // Measure column widths
+  let colWidths = [];
 
-	table.forEach((row) => {
-		row.forEach((item, idx) => {
-			colWidths[idx] = Math.max(colWidths[idx] || 0, stringWidth(item));
-		})
-	});
+  table.forEach((row) => {
+    row.forEach((item, idx) => {
+      colWidths[idx] = Math.max(colWidths[idx] || 0, stringWidth(item));
+    })
+  });
 
-	// Render rows
-	table.forEach((row) => {
-		let items = row.map((item, i) => {
-			// Add padding between columns unless the alignment is the opposite to the
-			// next column and pad to the column width.
-			let padding =
-				!columns[i + 1] || columns[i + 1].align === columns[i].align ? 4 : 0;
-			return pad(item, colWidths[i] + padding, columns[i].align);
-		});
+  // Render rows
+  table.forEach((row) => {
+    let items = row.map((item, i) => {
+      // Add padding between columns unless the alignment is the opposite to the
+      // next column and pad to the column width.
+      let padding =
+        !columns[i + 1] || columns[i + 1].align === columns[i].align ? 4 : 0;
+      return pad(item, colWidths[i] + padding, columns[i].align);
+    });
 
-		console.log(items.join(''));
-	});
+    console.log(items.join(''));
+  });
 }
 
 function sortResults(a, b) {

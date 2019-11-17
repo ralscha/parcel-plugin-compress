@@ -1,6 +1,6 @@
 const fs = require('fs');
-const {default: pQueue} = require('p-queue');
-const comsiconfig = require('cosmiconfig');
+const { default: pQueue } = require('p-queue');
+const { cosmiconfig } = require('cosmiconfig');
 const chalk = require('chalk');
 const zopfliAdapter = require('./zopfliAdapter');
 const brotliAdapter = require('./brotliAdapter');
@@ -46,7 +46,7 @@ module.exports = bundler => {
 			console.log(chalk.bold('\n🗜️  Compressing bundled files...\n'));
 
 			try {
-				const explorer = comsiconfig('compress');
+				const explorer = cosmiconfig('compress');
 				const { config: { gzip, brotli, test, threshold } } = (await explorer.search()) || { config: defaultOptions };
 
 				const fileTest = new RegExp(test);
@@ -62,7 +62,7 @@ module.exports = bundler => {
 				const queue = new pQueue({ concurrency: defaultOptions.concurrency });
 
 				[...filesToCompress(bundle)].forEach(file => {
-					queue.add(() => gzipCompress(file, { ...defaultOptions.gzip, threshold, ...gzip  }));
+					queue.add(() => gzipCompress(file, { ...defaultOptions.gzip, threshold, ...gzip }));
 					queue.add(() => brotliCompress(file, { ...defaultOptions.brotli, threshold, ...brotli }));
 				});
 
@@ -104,7 +104,7 @@ module.exports = bundler => {
 		}
 
 		return new Promise((resolve, reject) => {
-			fs.readFile(file, function(err, content) {
+			fs.readFile(file, function (err, content) {
 				if (err) { return reject(err); }
 
 				if (config.zlib) {
