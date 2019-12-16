@@ -79,7 +79,8 @@ gzip_static  on;
 See the [documentation](http://nginx.org/en/docs/http/ngx_http_gzip_static_module.html) for more information.
 
 To enable Brotli support you either 
-  * build Nginx from source with the [ngx_brotli](https://github.com/google/ngx_brotli) module from Google
+  * build the [ngx_brotli](https://github.com/google/ngx_brotli) from source:          
+    https://www.majlovesreg.one/adding-brotli-to-a-built-nginx-instance
   * or install a pre-built Nginx from ppa with the brotli module included:  
     https://gablaxian.com/blog/brotli-compression
   * or use the approach described in this blog post that works without the brotli module:    
