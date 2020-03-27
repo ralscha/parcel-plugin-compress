@@ -28,6 +28,6 @@
   },
   "optionalDependencies": {
     "iltorb": "2.4.5",
-    "node-zopfli-es": "1.0.3"
+    "node-zopfli-es": "1.0.4"
   }
 }
