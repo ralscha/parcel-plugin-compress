@@ -1,7 +1,7 @@
 Parcel plugin that precompresses all assets in production mode. 
 
-This plugin utilizes [@gfx/zopfli](https://github.com/gfx/universal-zopfli-js), [node-zopfli-es](https://github.com/jaeh/node-zopfli-es) and [zlib](https://nodejs.org/dist/latest-v10.x/docs/api/zlib.html) for GZip compression
-and [brotli](https://www.npmjs.com/package/brotli) and [iltorb](https://github.com/MayhemYDG/iltorb) for Brotli compression.
+This plugin utilizes [@gfx/zopfli](https://github.com/gfx/universal-zopfli-js), [node-zopfli-es](https://github.com/jaeh/node-zopfli-es) and [zlib](https://nodejs.org/dist/latest-v13.x/docs/api/zlib.html) for GZip compression
+and [zlib](https://nodejs.org/dist/latest-v13.x/docs/api/zlib.html) (Node 11.7.0+) and [brotli](https://www.npmjs.com/package/brotli) for Brotli compression.
 
 
 ## Installation
@@ -40,14 +40,13 @@ To configure, add a file called `.compressrc` in your project's root folder, or 
   // configuration options for brotli compress
   "brotli": {
     "enabled": true,
-    "mode": 0,
-    "quality": 11,
-    "lgwin": 22,
-    "lgblock": 0,
-    "enable_dictionary": true,
-    "enable_transforms": false,
-    "greedy_block_split": false,
-    "enable_context_modeling": false,
+    "mode": 0, // 0 = generic, 1 = text, 2 = font (used in WOFF 2.0)
+    "quality": 11, // 0 - 11, 11 = best
+    "lgwin": 24, // 10 - 24    
+    "enable_context_modeling": true, // disabling decreases compression ratio in favour of decompression speed
+    "lgblock": undefined, // 16 - 24
+    "nPostfix": undefined, // 0 - 3
+    "nDirect": undefined // 0 to (15 << nPostfix) in steps of (1 << nPostfix)
   }
 }
 ```

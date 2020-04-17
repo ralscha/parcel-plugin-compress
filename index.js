@@ -28,12 +28,8 @@ const defaultOptions = {
 		enabled: true,
 		mode: 0,
 		quality: 11,
-		lgwin: 22,
-		lgblock: 0,
-		enable_dictionary: true,
-		enable_transforms: false,
-		greedy_block_split: false,
-		enable_context_modeling: false
+		lgwin: 24,
+		enable_context_modeling: true
 	}
 };
 
@@ -156,6 +152,37 @@ module.exports = bundler => {
 
 		if (config.threshold && stat.size < config.threshold) {
 			return Promise.resolve();
+		}
+
+		if (brotli.isZlib) {
+			let brotliMode;
+			if (config.mode === 1) {
+				brotliMode = zlib.constants.BROTLI_MODE_TEXT;
+			}
+			else if (config.mode === 2) {
+				brotliMode = zlib.constants.BROTLI_MODE_FONT;
+			}
+			else {
+				brotliMode = zlib.constants.BROTLI_MODE_GENERIC;
+			}
+			config = {
+				params: {
+					[zlib.constants.BROTLI_PARAM_MODE]: brotliMode,
+					[zlib.constants.BROTLI_PARAM_QUALITY]: config.quality,
+					[zlib.constants.BROTLI_PARAM_SIZE_HINT]: stat.size,
+					[zlib.constants.BROTLI_PARAM_LGWIN]: config.lgwin,
+					[zlib.constants.BROTLI_PARAM_DISABLE_LITERAL_CONTEXT_MODELING]: (config.enable_context_modeling === false ? true : false)
+				}
+			};
+			if (config.lgblock) {
+				config.params[zlib.constants.BROTLI_PARAM_LGBLOCK] = config.lgblock;
+			}
+			if (config.nPostfix) {
+				config.params[zlib.constants.BROTLI_PARAM_NPOSTFIX] = config.nPostfix;
+			}
+			if (config.nDirect) {
+				config.params[zlib.constants.BROTLI_PARAM_NDIRECT] = config.nDirect;
+			}
 		}
 
 		return new Promise((resolve, reject) => {
