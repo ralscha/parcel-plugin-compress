@@ -47,7 +47,12 @@ To configure, add a file called `.compressrc` in your project's root folder, or 
     "lgblock": undefined, // 16 - 24
     "nPostfix": undefined, // 0 - 3
     "nDirect": undefined // 0 to (15 << nPostfix) in steps of (1 << nPostfix)
-  }
+  },
+  // a flag that changes the behavior of the plugin, be default this option is disabled
+  // and the plugin compresses all the files it receives via the Parcel bundle object.  
+  // if true the plugin compresses all files in the outputdirectory and subdirectories
+  // that match the test regular expression
+  compressOutput: false
 }
 ```
 

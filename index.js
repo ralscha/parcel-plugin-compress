@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { default: pQueue } = require('p-queue');
 const { cosmiconfig } = require('cosmiconfig');
 const chalk = require('chalk');
@@ -12,6 +13,7 @@ const zopfli = zopfliAdapter();
 
 const defaultOptions = {
 	test: '.',
+	compressOutput: false,
 	threshold: undefined,
 	concurrency: 2,
 	gzip: {
@@ -37,27 +39,52 @@ let output = [];
 
 module.exports = bundler => {
 	bundler.on('bundled', async (bundle) => {
+		console.log(bundle);
 		if (process.env.NODE_ENV === 'production') {
 			const start = new Date().getTime();
 			console.log(chalk.bold('\n🗜️  Compressing bundled files...\n'));
 
 			try {
 				const explorer = cosmiconfig('compress');
-				const { config: { gzip, brotli, test, threshold } } = (await explorer.search()) || { config: defaultOptions };
+				const { config: { gzip, brotli, test, threshold, compressOutput } } = (await explorer.search()) || { config: defaultOptions };
 
 				const fileTest = new RegExp(test);
-				function* filesToCompress(bundle) {
-					if (bundle.name && fileTest.test(bundle.name)) {
-						yield bundle.name
+				let filesToCompress;
+				let input;
+
+				if (compressOutput === true) {
+					input = bundle.entryAsset.options.outDir;
+					filesToCompress = function* (dir) {
+						const files = fs.readdirSync(dir);
+						for (const file of files) {
+							const f = path.join(dir, file);
+							if (fs.statSync(f).isDirectory()) {
+								try {
+									yield* filesToCompress(f);
+								} catch (error) {
+									continue;
+								}
+							} else {
+								if (fileTest.test(f)) {
+									yield f;
+								}
+							}
+						}
 					}
-					for (var child of bundle.childBundles) {
-						yield* filesToCompress(child)
+				} else {
+					input = bundle;
+					filesToCompress = function* (bundle) {
+						if (bundle.name && fileTest.test(bundle.name)) {
+							yield bundle.name
+						}
+						for (var child of bundle.childBundles) {
+							yield* filesToCompress(child)
+						}
 					}
 				}
 
 				const queue = new pQueue({ concurrency: defaultOptions.concurrency });
-
-				[...filesToCompress(bundle)].forEach(file => {
+				[...filesToCompress(input)].forEach(file => {
 					queue.add(() => gzipCompress(file, { ...defaultOptions.gzip, threshold, ...gzip }));
 					queue.add(() => brotliCompress(file, { ...defaultOptions.brotli, threshold, ...brotli }));
 				});
