@@ -39,7 +39,6 @@ let output = [];
 
 module.exports = bundler => {
 	bundler.on('bundled', async (bundle) => {
-		console.log(bundle);
 		if (process.env.NODE_ENV === 'production') {
 			const start = new Date().getTime();
 			console.log(chalk.bold('\n🗜️  Compressing bundled files...\n'));
