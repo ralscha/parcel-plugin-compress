@@ -23,10 +23,10 @@
     "cosmiconfig": "7.0.0",
     "filesize": "6.1.0",
     "grapheme-breaker": "0.3.2",
-    "p-queue": "6.6.1",
+    "p-queue": "6.6.2",
     "strip-ansi": "6.0.0"
   },
   "optionalDependencies": {
-    "node-zopfli-es": "1.0.6"
+    "node-zopfli-es": "1.0.7"
   }
 }
