@@ -1,4 +1,9 @@
-Parcel plugin that precompresses all assets in production mode. 
+### This is a Parcel 1 plugin. 
+### Parcel 2 has built-in support for compressing assets: https://parceljs.org/features/production/#compression
+
+------
+
+Parcel 1 plugin that precompresses all assets in production mode. 
 
 This plugin utilizes [@gfx/zopfli](https://github.com/gfx/universal-zopfli-js), [node-zopfli-es](https://github.com/jaeh/node-zopfli-es) and [zlib](https://nodejs.org/dist/latest-v13.x/docs/api/zlib.html) for GZip compression
 and [zlib](https://nodejs.org/dist/latest-v13.x/docs/api/zlib.html) (Node 11.7.0+) and [brotli](https://www.npmjs.com/package/brotli) for Brotli compression.
